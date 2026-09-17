@@ -1,0 +1,12 @@
+node_modules/
+dist/
+build/
+*.log
+.DS_Store
+.env
+.env.local
+server/data/*.sqlite
+server/data/*.sqlite-journal
+client/dist/
+client/public/tesseract/
+coverage/
