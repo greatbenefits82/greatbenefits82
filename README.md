@@ -53,6 +53,34 @@ npm run dev:server   # http://localhost:3001
 npm run dev:client   # http://localhost:5173 (バックエンドへ /api をプロキシ)
 ```
 
+MacBook Air自身のブラウザで使うだけならこれで完了です（`http://localhost:5173`）。
+
+### iPhone / Rokidグラスなど、他のデバイスから使う場合
+
+ブラウザのカメラAPIは HTTPS（または `localhost`）でしか動作しません。同じWi-Fi内の
+別デバイスからLAN経由でアクセスする場合は、[mkcert](https://github.com/FiloSottile/mkcert) で
+ローカル用のHTTPS証明書を発行してください（初回のみ）。
+
+```bash
+brew install mkcert nss   # 未インストールの場合
+cd client
+npm run certs             # .certs/ に証明書を生成し、Macの信頼済みCAに登録
+```
+
+その後 `npm run dev:client` を実行すると自動的に **https://** で起動し、ターミナルに
+
+```
+➜  Network: https://192.168.x.x:5173/
+```
+
+のようなURLが表示されます。これを同じWi-FiにつないだiPhoneのSafariやRokidグラスの
+ブラウザで開けば、カメラが使えます。
+
+初回アクセス時は証明書が「未信頼」の警告が出ることがあります。警告なしで使いたい場合は、
+`npm run certs` 実行時に表示される `rootCA.pem` を各デバイスに転送し、信頼済みルート証明書として
+インストールしてください（iPhoneはAirDrop→設定アプリでプロファイルインストール→
+証明書信頼設定で完全信頼をON、Rokid(Android)は設定→セキュリティ→CA証明書のインストール）。
+
 ### ビルド / テスト
 
 ```bash

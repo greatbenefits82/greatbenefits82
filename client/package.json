@@ -4,6 +4,7 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
+    "certs": "bash scripts/generate-dev-certs.sh",
     "predev": "node scripts/copy-tesseract-assets.mjs",
     "dev": "vite",
     "prebuild": "node scripts/copy-tesseract-assets.mjs",
