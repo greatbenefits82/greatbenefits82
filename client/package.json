@@ -8,19 +8,14 @@
   },
   "scripts": {
     "certs": "bash scripts/generate-dev-certs.sh",
-    "predev": "node scripts/copy-tesseract-assets.mjs",
     "dev": "vite",
-    "prebuild": "node scripts/copy-tesseract-assets.mjs",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "test": "vitest run"
   },
   "dependencies": {
-    "@tensorflow-models/coco-ssd": "^2.2.3",
-    "@tensorflow/tfjs": "^4.22.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "tesseract.js": "^5.1.1"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.10",

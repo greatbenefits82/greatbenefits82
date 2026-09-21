@@ -58,8 +58,31 @@ export interface CountRecord {
   note?: string;
 }
 
-export interface DetectedObject {
-  class: string;
-  score: number;
-  bbox: [number, number, number, number];
+export type VisionConfidence = "high" | "medium" | "low";
+
+export interface GenericVisionItem {
+  name: string;
+  category?: string;
+  quantity: number;
+  confidence: VisionConfidence;
+}
+
+export interface GenericVisionResult {
+  items: GenericVisionItem[];
+  notes?: string;
+}
+
+export interface WineVisionItem {
+  brand: string;
+  producer?: string;
+  vintage?: string;
+  category?: string;
+  quantity: number;
+  confidence: VisionConfidence;
+  rawLabelText?: string;
+}
+
+export interface WineVisionResult {
+  wines: WineVisionItem[];
+  notes?: string;
 }

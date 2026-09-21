@@ -5,9 +5,9 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import { VitePWA } from "vite-plugin-pwa";
 
-// Real-time camera detection needs a secure context (HTTPS) on real devices
-// (iPhone Safari, Rokid glasses' Android browser) except on localhost, so the
-// PWA is configured for offline caching of the TF.js model + app shell too.
+// The camera API needs a secure context (HTTPS) on real devices (iPhone
+// Safari, Rokid glasses' Android browser) except on localhost, so the PWA
+// is configured for offline caching of the app shell too.
 //
 // For LAN access from other devices, run `npm run certs` once (mkcert) to
 // generate a locally-trusted cert into .certs/; if present, dev/preview
@@ -37,9 +37,6 @@ export default defineConfig({
         icons: [
           { src: "icons/icon.svg", sizes: "any", type: "image/svg+xml", purpose: "any maskable" },
         ],
-      },
-      workbox: {
-        maximumFileSizeToCacheInBytes: 20 * 1024 * 1024,
       },
     }),
   ],

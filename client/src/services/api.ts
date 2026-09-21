@@ -1,4 +1,12 @@
-import type { CountRecord, DetectedFormat, MasterItem, WineCandidate, WineLookupResult } from "../types";
+import type {
+  CountRecord,
+  DetectedFormat,
+  GenericVisionResult,
+  MasterItem,
+  WineCandidate,
+  WineLookupResult,
+  WineVisionResult,
+} from "../types";
 
 const BASE = import.meta.env.VITE_API_BASE ?? "/api";
 
@@ -74,4 +82,19 @@ export function addGenericRecord(payload: {
 
 export function exportUrl(): string {
   return `${BASE}/export`;
+}
+
+/** imageDataUrl: a `data:image/jpeg;base64,...` string from a canvas capture. */
+export function identifyGenericItems(imageDataUrl: string): Promise<GenericVisionResult> {
+  return request("/vision/identify", {
+    method: "POST",
+    body: JSON.stringify({ mode: "generic", image: imageDataUrl }),
+  });
+}
+
+export function identifyWineLabels(imageDataUrl: string): Promise<WineVisionResult> {
+  return request("/vision/identify", {
+    method: "POST",
+    body: JSON.stringify({ mode: "wine", image: imageDataUrl }),
+  });
 }

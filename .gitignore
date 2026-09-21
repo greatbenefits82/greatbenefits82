@@ -8,6 +8,5 @@ build/
 server/data/*.sqlite
 server/data/*.sqlite-journal
 client/dist/
-client/public/tesseract/
 client/.certs/
 coverage/

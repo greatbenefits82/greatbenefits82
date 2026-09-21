@@ -42,7 +42,7 @@ export interface CountRecord {
   id: string;
   timestamp: string;
   mode: CountMode;
-  /** what was recognized: coco-ssd class name for generic mode, OCR text / brand for wine mode */
+  /** what was recognized: item name for generic mode, wine brand for wine mode */
   label: string;
   quantity: number;
   matchedMasterId?: string;
