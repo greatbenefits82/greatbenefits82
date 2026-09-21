@@ -36,24 +36,74 @@ client/   Vite + React によるフロントエンド (PWA)
 
 ## セットアップ
 
+### 必要なもの: Node.js 20 か 22（LTS）
+
+`better-sqlite3` など一部のライブラリはNode.jsの最新版（非LTS）向けの事前ビルド済みバイナリが
+間に合っておらず、ソースからのコンパイルに失敗することがあります。
+[nvm](https://github.com/nvm-sh/nvm) で安定版（LTS）のNode.jsを使うことを強く推奨します。
+
+```bash
+node -v
+```
+
+`v20.19.x` 系か `v22.12.x` 以降でなければ、nvmを入れて切り替えてください。
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+```
+
+一度ターミナルを閉じて開き直してから、
+
+```bash
+nvm install 22
+nvm use 22
+node -v
+```
+
+`v22.x.x` になっていればOKです（以降、新しいターミナルを開くたびに `nvm use 22` が必要な場合があります）。
+
+### 依存パッケージのインストール
+
+以前に一部だけインストールが失敗している場合は、念のため一度消してからやり直してください。
+
+```bash
+rm -rf node_modules server/node_modules client/node_modules package-lock.json
+```
+
+サーバーとクライアント、それぞれ**1行ずつ順番に**実行し、途中でエラーが出ていないか確認してください
+（`&&` で繋いで一気に実行すると、片方が失敗したときにもう片方が実行されず、原因が分かりにくくなります）。
+
 ```bash
 npm install --workspace server
+```
+
+```bash
 npm install --workspace client
 ```
 
-### サーバー起動
+### サーバー起動とクライアント起動（別々のターミナルで）
+
+`dev:server` と `dev:client` はどちらも「動き続けるプロセス」なので、**ターミナルのウィンドウ/タブを2つ**
+開いて、それぞれ別々に実行してください（1つのターミナルで順番に実行すると、1つ目が終わらないので
+2つ目が永遠に始まりません）。
+
+ターミナル①:
 
 ```bash
-npm run dev:server   # http://localhost:3001
+npm run dev:server
 ```
 
-### クライアント起動
+`http://localhost:3001` で待受を始めます。
+
+ターミナル②（新しいタブ/ウィンドウを開いて）:
 
 ```bash
-npm run dev:client   # http://localhost:5173 (バックエンドへ /api をプロキシ)
+npm run dev:client
 ```
 
-MacBook Air自身のブラウザで使うだけならこれで完了です（`http://localhost:5173`）。
+`http://localhost:5173` が使えるようになります（`/api` はターミナル①のサーバーへ自動的に転送されます）。
+
+MacBook Air自身のブラウザで使うだけなら、ここまでで完了です（`http://localhost:5173` を開く）。
 
 ### iPhone / Rokidグラスなど、他のデバイスから使う場合
 
@@ -113,6 +163,23 @@ GOOGLE_CSE_API_KEY=xxxx GOOGLE_CSE_CX=xxxx npm run dev:server
 5. 「棚卸し表・記録」タブの「Excelでエクスポート」から結果を出力。
 
 「一般物体カウント」タブは、箱・カップ・本など銘柄を問わない一般的な物のリアルタイムカウントに使えます。
+
+## トラブルシューティング
+
+- **`npm install` が `better-sqlite3` のビルドで失敗する / `node-gyp` のエラーが出る**
+  → 上記の「必要なもの: Node.js 20 か 22（LTS）」を参照し、nvmでLTS版に切り替えてから
+  `rm -rf node_modules server/node_modules client/node_modules package-lock.json` で
+  一度クリーンにしてインストールし直してください。
+  それでも失敗する場合はXcodeのコマンドラインツールが必要です: `xcode-select --install`
+- **`sh: tsx: command not found` / `Cannot find module 'tesseract.js/package.json'`**
+  → 依存パッケージのインストールが（多くは直前の `better-sqlite3` のビルド失敗で連鎖的に）
+  完了していません。上記のクリーンインストール手順をやり直してください。
+- **ブラウザで `localhost:5173` に接続拒否 (ERR_CONNECTION_REFUSED)**
+  → `npm run dev:client` がエラーで落ちている（起動できていない）ことがほとんどです。
+  ターミナル②の画面に赤いエラーが出ていないか確認してください。
+- **iPhone/Rokidグラスでカメラが起動しない**
+  → `http://` の LAN アドレスではブラウザのカメラAPIがブロックされます。
+  「iPhone / Rokidグラスなど、他のデバイスから使う場合」の手順で `https://` にしてください。
 
 ## 既知の制限・今後の拡張ポイント
 
